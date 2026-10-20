@@ -1,0 +1,36 @@
+{
+  "skills": {
+    "pluralsight": "~/.claude/skills/pluralsight"
+  },
+  "mcpServers": {
+    "plusplus": {
+      "command": "python",
+      "args": ["plusplus_mcp_server.py"],
+      "cwd": "C:\\Users\\dvoigtlander\\claude\\Headless_Training",
+      "env": {
+        "PLUSPLUS_API_KEY": "${PLUSPLUS_API_KEY}",
+        "PLUSPLUS_BASE_URL": "https://sfdc-bt.plusplus.app"
+      }
+    }
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd /c/Users/dvoigtlander/claude/Headless_Training && python app.py > app.log 2>&1 &",
+            "async": true,
+            "statusMessage": "Starting Flask training search backend..."
+          },
+          {
+            "type": "command",
+            "command": "cd /c/Users/dvoigtlander/claude/Headless_Training && ./ngrok.exe http 3000 > ngrok.log 2>&1 &",
+            "async": true,
+            "statusMessage": "Starting ngrok tunnel..."
+          }
+        ]
+      }
+    ]
+  }
+}

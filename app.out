@@ -1,0 +1,144 @@
+INFO:     Started server process [28700]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8006 (Press CTRL+C to quit)
+DEBUG: Slash command received: /training-search, text: salesforce, channel: C0BSF33N6RW, thread_ts: None
+DEBUG: Slack request timestamp verified
+DEBUG: Creating background thread for query='salesforce', channel=C0BSF33N6RW, thread_ts=None
+DEBUG: Background thread started, returning response
+INFO:     50.19.16.191:0 - "POST /slack/slash HTTP/1.1" 200 OK
+DEBUG: [Thread] Starting background search for 'salesforce' in channel C0BSF33N6RW, thread_ts=None
+DEBUG: [Thread] Querying PlusPlus API...
+DEBUG: [Thread] Built 8 results
+DEBUG: [Thread] Posting 23 blocks to Slack...
+DEBUG: [Thread] Bot token available: True
+DEBUG: [Thread] Posting to Slack channel C0BSF33N6RW...
+DEBUG: [Thread] Making POST request...
+DEBUG: [Thread] Status: 200
+DEBUG: [Thread] Slack response ok: True
+SUCCESS [Thread] Posted to Slack!
+DEBUG: Slash command received: /training-search, text: salesforce, channel: C0BSF33N6RW, thread_ts: None
+DEBUG: Slack request timestamp verified
+DEBUG: Creating background thread for query='salesforce', channel=C0BSF33N6RW, thread_ts=None
+DEBUG: Background thread started, returning response
+INFO:     35.168.16.202:0 - "POST /slack/slash HTTP/1.1" 200 OK
+DEBUG: [Thread] Starting background search for 'salesforce' in channel C0BSF33N6RW, thread_ts=None
+DEBUG: [Thread] Querying PlusPlus API...
+DEBUG: [Thread] Built 8 results
+DEBUG: [Thread] Posting 23 blocks to Slack...
+DEBUG: [Thread] Bot token available: True
+DEBUG: [Thread] Posting to Slack channel C0BSF33N6RW...
+DEBUG: [Thread] Making POST request...
+DEBUG: [Thread] Status: 200
+DEBUG: [Thread] Slack response ok: True
+SUCCESS [Thread] Posted to Slack!
+DEBUG: Slash command received: /training-search, text: tableau, channel: C0BSF33N6RW, thread_ts: None
+DEBUG: Slack request timestamp verified
+DEBUG: Creating background thread for query='tableau', channel=C0BSF33N6RW, thread_ts=None
+DEBUG: Background thread started, returning response
+INFO:     52.207.150.113:0 - "POST /slack/slash HTTP/1.1" 200 OK
+DEBUG: [Thread] Starting background search for 'tableau' in channel C0BSF33N6RW, thread_ts=None
+DEBUG: [Thread] Querying PlusPlus API...
+DEBUG: [Thread] Built 3 results
+DEBUG: [Thread] Posting 12 blocks to Slack...
+DEBUG: [Thread] Bot token available: True
+DEBUG: [Thread] Posting to Slack channel C0BSF33N6RW...
+DEBUG: [Thread] Making POST request...
+DEBUG: [Thread] Status: 200
+DEBUG: [Thread] Slack response ok: True
+SUCCESS [Thread] Posted to Slack!
+DEBUG: Slash command received: /training-search, text: mulesoft, channel: C0BSF33N6RW, thread_ts: None
+DEBUG: Slack request timestamp verified
+DEBUG: Creating background thread for query='mulesoft', channel=C0BSF33N6RW, thread_ts=None
+DEBUG: Background thread started, returning response
+INFO:     32.198.13.212:0 - "POST /slack/slash HTTP/1.1" 200 OK
+DEBUG: [Thread] Starting background search for 'mulesoft' in channel C0BSF33N6RW, thread_ts=None
+DEBUG: [Thread] Querying PlusPlus API...
+DEBUG: [Thread] Built 5 results
+DEBUG: [Thread] Posting 17 blocks to Slack...
+DEBUG: [Thread] Bot token available: True
+DEBUG: [Thread] Posting to Slack channel C0BSF33N6RW...
+DEBUG: [Thread] Making POST request...
+DEBUG: [Thread] Status: 200
+DEBUG: [Thread] Slack response ok: True
+SUCCESS [Thread] Posted to Slack!
+DEBUG: Slash command received: /training-search, text: mulesoft, channel: C0BSF33N6RW, thread_ts: None
+DEBUG: Slack request timestamp verified
+DEBUG: Creating background thread for query='mulesoft', channel=C0BSF33N6RW, thread_ts=None
+DEBUG: Background thread started, returning response
+INFO:     13.217.49.224:0 - "POST /slack/slash HTTP/1.1" 200 OK
+DEBUG: [Thread] Starting background search for 'mulesoft' in channel C0BSF33N6RW, thread_ts=None
+DEBUG: [Thread] Querying PlusPlus API...
+DEBUG: [Thread] Built 5 results
+DEBUG: [Thread] Posting 17 blocks to Slack...
+DEBUG: [Thread] Bot token available: True
+DEBUG: [Thread] Posting to Slack channel C0BSF33N6RW...
+DEBUG: [Thread] Making POST request...
+DEBUG: [Thread] Status: 200
+DEBUG: [Thread] Slack response ok: True
+SUCCESS [Thread] Posted to Slack!
+DEBUG: Slash command received: /training-search, text: salesforce, channel: C0BSF33N6RW, thread_ts: None
+DEBUG: Slack request timestamp verified
+DEBUG: Creating background thread for query='salesforce', channel=C0BSF33N6RW, thread_ts=None
+DEBUG: Background thread started, returning response
+INFO:     13.217.128.22:0 - "POST /slack/slash HTTP/1.1" 200 OK
+DEBUG: [Thread] Starting background search for 'salesforce' in channel C0BSF33N6RW, thread_ts=None
+DEBUG: [Thread] Querying PlusPlus API...
+DEBUG: [Thread] Built 8 results
+DEBUG: [Thread] Posting 23 blocks to Slack...
+DEBUG: [Thread] Bot token available: True
+DEBUG: [Thread] Posting to Slack channel C0BSF33N6RW...
+DEBUG: [Thread] Making POST request...
+DEBUG: [Thread] Status: 200
+DEBUG: [Thread] Slack response ok: True
+SUCCESS [Thread] Posted to Slack!
+DEBUG: Slash command received: /training-search, text: salesforce, channel: C0BSF33N6RW, thread_ts: None
+DEBUG: Slack request timestamp verified
+DEBUG: Creating background thread for query='salesforce', channel=C0BSF33N6RW, thread_ts=None
+DEBUG: Background thread started, returning response
+INFO:     52.207.150.113:0 - "POST /slack/slash HTTP/1.1" 200 OK
+DEBUG: [Thread] Starting background search for 'salesforce' in channel C0BSF33N6RW, thread_ts=None
+DEBUG: [Thread] Querying PlusPlus API...
+DEBUG: [Thread] Built 8 results
+DEBUG: [Thread] Posting 23 blocks to Slack...
+DEBUG: [Thread] Bot token available: True
+DEBUG: [Thread] Posting to Slack channel C0BSF33N6RW...
+DEBUG: [Thread] Making POST request...
+DEBUG: [Thread] Status: 200
+DEBUG: [Thread] Slack response ok: True
+SUCCESS [Thread] Posted to Slack!
+DEBUG: Slash command received: /training-search, text: salesforce, channel: C0BSF33N6RW, thread_ts: None
+DEBUG: Slack request timestamp verified
+DEBUG: Creating background thread for query='salesforce', channel=C0BSF33N6RW, thread_ts=None
+DEBUG: Background thread started, returning response
+INFO:     3.89.254.8:0 - "POST /slack/slash HTTP/1.1" 200 OK
+DEBUG: [Thread] Starting background search for 'salesforce' in channel C0BSF33N6RW, thread_ts=None
+DEBUG: [Thread] Querying PlusPlus API...
+DEBUG: [Thread] Built 8 results
+DEBUG: [Thread] Posting 23 blocks to Slack...
+DEBUG: [Thread] Bot token available: True
+DEBUG: [Thread] Posting to Slack channel C0BSF33N6RW...
+DEBUG: [Thread] Making POST request...
+DEBUG: [Thread] Status: 200
+DEBUG: [Thread] Slack response ok: True
+SUCCESS [Thread] Posted to Slack!
+DEBUG: Slash command received: /training-search, text: agents, channel: C0BSF33N6RW, thread_ts: None
+DEBUG: Slack request timestamp verified
+DEBUG: Creating background thread for query='agents', channel=C0BSF33N6RW, thread_ts=None
+DEBUG: Background thread started, returning response
+INFO:     52.87.208.161:0 - "POST /slack/slash HTTP/1.1" 200 OK
+DEBUG: [Thread] Starting background search for 'agents' in channel C0BSF33N6RW, thread_ts=None
+DEBUG: [Thread] Querying PlusPlus API...
+DEBUG: [Thread] Built 6 results
+DEBUG: [Thread] Posting 19 blocks to Slack...
+DEBUG: [Thread] Bot token available: True
+DEBUG: [Thread] Posting to Slack channel C0BSF33N6RW...
+DEBUG: [Thread] Making POST request...
+DEBUG: [Thread] Status: 200
+DEBUG: [Thread] Slack response ok: True
+SUCCESS [Thread] Posted to Slack!
+DEBUG: Slash command received: /training-search, text: salesforce, channel: C0BSF33N6RW, thread_ts: None
+DEBUG: Slack request timestamp verified
+DEBUG: Creating background thread for query='salesforce', channel=C0BSF33N6RW, thread_ts=None
+DEBUG: Background thread started, returning response
+INFO:     98.92.98.7:0 - "POST /slack/slash HTTP/1.1" 200 OK

@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlusPlus API Documentation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        aside {
+            width: 250px;
+            background: white;
+            padding: 2rem 1.5rem;
+            height: calc(100vh - 200px);
+            overflow-y: auto;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+        }
+
+        aside h3 {
+            color: #667eea;
+            margin: 1.5rem 0 1rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        aside ul {
+            list-style: none;
+        }
+
+        aside li {
+            margin: 0.5rem 0;
+        }
+
+        aside a {
+            color: #555;
+            text-decoration: none;
+            display: block;
+            padding: 0.5rem 0.75rem;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        aside a:hover {
+            background: #f0f0f0;
+            color: #667eea;
+        }
+
+        main {
+            flex: 1;
+            padding: 3rem 2rem;
+            background: white;
+            margin: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        section {
+            margin-bottom: 3rem;
+            scroll-margin-top: 100px;
+        }
+
+        h2 {
+            color: #667eea;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #667eea;
+        }
+
+        h3 {
+            color: #764ba2;
+            font-size: 1.3rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        h4 {
+            color: #555;
+            font-size: 1.1rem;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: #555;
+        }
+
+        .endpoint {
+            background: #f9f9f9;
+            border-left: 4px solid #667eea;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .method {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-right: 0.5rem;
+        }
+
+        .method.get {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .method.post {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 1.5rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            line-height: 1.4;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        table thead {
+            background: #667eea;
+            color: white;
+        }
+
+        table th {
+            padding: 0.75rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table tbody tr:hover {
+            background: #f5f5f5;
+        }
+
+        .note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .error {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        .response-example {
+            background: #f0f0f0;
+            padding: 1rem;
+            border-radius: 4px;
+            margin: 1rem 0;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #ddd;
+            margin: 1rem 0;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            font-size: 1rem;
+            color: #555;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        footer {
+            background: #2d3436;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        .copy-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            float: right;
+        }
+
+        .copy-btn:hover {
+            background: #764ba2;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            aside {
+                width: 100%;
+                height: auto;
+                position: relative;
+                top: auto;
+                box-shadow: none;
+                border-bottom: 1px solid #ddd;
+            }
+
+            main {
+                margin: 0;
+                border-radius: 0;
+            }
+
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        .hljs {
+            background: #2d2d2d !important;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>📚 PlusPlus API</h1>
+        <p>Unified HTTP API for accessing the Salesforce PlusPlus training catalog</p>
+    </header>
+
+    <div class="container">
+        <aside>
+            <h3>Getting Started</h3>
+            <ul>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#installation">Installation</a></li>
+                <li><a href="#env-vars">Environment Variables</a></li>
+            </ul>
+
+            <h3>Endpoints</h3>
+            <ul>
+                <li><a href="#health">Health Check</a></li>
+                <li><a href="#courses">Get Courses</a></li>
+                <li><a href="#events">Get Events</a></li>
+                <li><a href="#enrollments">Get Enrollments</a></li>
+                <li><a href="#assignments">Get Assignments</a></li>
+                <li><a href="#search">Search</a></li>
+                <li><a href="#unified-search">Unified Search</a></li>
+            </ul>
+
+            <h3>Integration</h3>
+            <ul>
+                <li><a href="#authentication">Authentication</a></li>
+                <li><a href="#slack">Slack Integration</a></li>
+                <li><a href="#deployment">Deployment</a></li>
+            </ul>
+
+            <h3>Reference</h3>
+            <ul>
+                <li><a href="#use-cases">Use Cases</a></li>
+                <li><a href="#errors">Error Handling</a></li>
+                <li><a href="#troubleshooting">Troubleshooting</a></li>
+            </ul>
+        </aside>
+
+        <main>
+            <!-- Overview -->
+            <section id="overview">
+                <h2>Overview</h2>
+                <p>The PlusPlus API is a FastAPI server that provides unified access to the Salesforce training ecosystem:</p>
+                <ul>
+                    <li>Proxies requests to the PlusPlus training platform</li>
+                    <li>Searches across multiple training sources (Trailhead, Pluralsight, O'Reilly)</li>
+                    <li>Provides Slack integration via slash commands</li>
+                    <li>Handles authentication and request validation</li>
+                </ul>
+            </section>
+
+            <!-- Installation -->
+            <section id="installation">
+                <h2>Getting Started</h2>
+
+                <h3>Prerequisites</h3>
+                <ul>
+                    <li>Python 3.7+</li>
+                    <li>pip package manager</li>
+                    <li>Valid PlusPlus API key</li>
+                </ul>
+
+                <h3>Installation Steps</h3>
+
+                <h4>1. Install Dependencies</h4>
+                <pre><code class="language-bash">pip install -r requirements.txt</code></pre>
+
+                <h4>2. Set Environment Variables</h4>
+                <pre><code class="language-bash">export PLUSPLUS_API_KEY="your-api-key-here"
+export PORT=8000</code></pre>
+
+                <h4>3. Start the Server</h4>
+                <pre><code class="language-bash">python main.py</code></pre>
+
+                <p>The server will run on <code>http://localhost:8000</code> by default.</p>
+
+                <h4>Interactive Documentation</h4>
+                <p>Once running, access the interactive API docs:</p>
+                <ul>
+                    <li><strong>Swagger UI:</strong> <code>http://localhost:8000/docs</code></li>
+                    <li><strong>ReDoc:</strong> <code>http://localhost:8000/redoc</code></li>
+                </ul>
+            </section>
+
+            <!-- Environment Variables -->
+            <section id="env-vars">
+                <h2>Environment Variables</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Variable</th>
+                            <th>Required</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>PLUSPLUS_API_KEY</code></td>
+                            <td>✅ Yes</td>
+                            <td>-</td>
+                            <td>API key for PlusPlus platform</td>
+                        </tr>
+                        <tr>
+                            <td><code>PLUSPLUS_BASE_URL</code></td>
+                            <td>No</td>
+                            <td><code>https://sfdc-bt.plusplus.app</code></td>
+                            <td>PlusPlus API endpoint</td>
+                        </tr>
+                        <tr>
+                            <td><code>PLUSPLUS_API_AUTH_KEY</code></td>
+                            <td>No</td>
+                            <td>-</td>
+                            <td>Optional Bearer token for requests</td>
+                        </tr>
+                        <tr>
+                            <td><code>SLACK_SIGNING_SECRET</code></td>
+                            <td>No</td>
+                            <td>-</td>
+                            <td>Slack signing secret for slash commands</td>
+                        </tr>
+                        <tr>
+                            <td><code>PORT</code></td>
+                            <td>No</td>
+                            <td><code>8000</code></td>
+                            <td>Server port</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Endpoints -->
+            <section id="endpoints">
+                <h2>API Endpoints</h2>
+
+                <!-- Health Check -->
+                <section id="health">
+                    <h3>Health Check</h3>
+                    <div class="endpoint">
+                        <span class="method get">GET</span>
+                        <code>/health</code>
+                    </div>
+                    <p>Check if the API is running.</p>
+
+                    <h4>Response</h4>
+                    <pre><code class="language-json">{
+  "status": "ok",
+  "service": "plusplus-api"
+}</code></pre>
+
+                    <h4>Example</h4>
+                    <div class="tabs">
+                        <button class="tab-btn active" onclick="switchTab(event, 'health-bash')">Bash</button>
+                        <button class="tab-btn" onclick="switchTab(event, 'health-py')">Python</button>
+                    </div>
+                    <div id="health-bash" class="tab-content active">
+                        <pre><code class="language-bash">curl http://localhost:8000/health</code></pre>
+                    </div>
+                    <div id="health-py" class="tab-content">
+                        <pre><code class="language-python">import requests
+
+response = requests.get("http://localhost:8000/health")
+print(response.json())</code></pre>
+                    </div>
+                </section>
+
+                <!-- Get Courses -->
+                <section id="courses">
+                    <h3>Get All Courses</h3>
+                    <div class="endpoint">
+                        <span class="method get">GET</span>
+                        <code>/api/courses</code>
+                    </div>
+                    <p>Retrieve all available courses from the PlusPlus catalog.</p>
+
+                    <h4>Query Parameters</h4>
+                    <ul>
+                        <li><code>limit</code> (integer, 1-200, default: 100) - Number of results</li>
+                        <li><code>offset</code> (integer, default: 0) - Pagination offset</li>
+                    </ul>
+
+                    <h4>Response</h4>
+                    <pre><code class="language-json">{
+  "data": [
+    {
+      "id": "course-123",
+      "name": "MuleSoft Fundamentals",
+      "description": "Learn the basics of MuleSoft integration",
+      "status": "active"
+    }
+  ]
+}</code></pre>
+
+                    <h4>Examples</h4>
+                    <div class="tabs">
+                        <button class="tab-btn active" onclick="switchTab(event, 'courses-bash')">Bash</button>
+                        <button class="tab-btn" onclick="switchTab(event, 'courses-py')">Python</button>
+                    </div>
+                    <div id="courses-bash" class="tab-content active">
+                        <pre><code class="language-bash"># Get first 50 courses
+curl "http://localhost:8000/api/courses?limit=50&offset=0"
+
+# With authentication
+curl -H "Authorization: Bearer your-auth-key" http://localhost:8000/api/courses</code></pre>
+                    </div>
+                    <div id="courses-py" class="tab-content">
+                        <pre><code class="language-python">import requests
+
+response = requests.get("http://localhost:8000/api/courses", params={"limit": 50})
+courses = response.json()["data"]
+
+for course in courses:
+    print(f"{course['name']} - {course['status']}")</code></pre>
+                    </div>
+                </section>
+
+                <!-- Get Events -->
+                <section id="events">
+                    <h3>Get All Events</h3>
+                    <div class="endpoint">
+                        <span class="method get">GET</span>
+                        <code>/api/events</code>
+                    </div>
+                    <p>Retrieve all upcoming training events and sessions.</p>
+
+                    <h4>Query Parameters</h4>
+                    <ul>
+                        <li><code>limit</code> (integer, 1-200, default: 100)</li>
+                        <li><code>offset</code> (integer, default: 0)</li>
+                    </ul>
+
+                    <h4>Example</h4>
+                    <pre><code class="language-bash">curl "http://localhost:8000/api/events?limit=25"</code></pre>
+                </section>
+
+                <!-- Get Enrollments -->
+                <section id="enrollments">
+                    <h3>Get User Enrollments</h3>
+                    <div class="endpoint">
+                        <span class="method get">GET</span>
+                        <code>/api/enrollments</code>
+                    </div>
+                    <p>Retrieve courses the current user is enrolled in.</p>
+
+                    <h4>Example</h4>
+                    <pre><code class="language-bash">curl http://localhost:8000/api/enrollments</code></pre>
+                </section>
+
+                <!-- Get Assignments -->
+                <section id="assignments">
+                    <h3>Get User Assignments</h3>
+                    <div class="endpoint">
+                        <span class="method get">GET</span>
+                        <code>/api/assignments</code>
+                    </div>
+                    <p>Retrieve training assignments for the current user.</p>
+
+                    <h4>Example</h4>
+                    <pre><code class="language-bash">curl http://localhost:8000/api/assignments</code></pre>
+                </section>
+
+                <!-- Search -->
+                <section id="search">
+                    <h3>Search Courses & Events</h3>
+                    <div class="endpoint">
+                        <span class="method get">GET</span>
+                        <code>/api/search</code>
+                    </div>
+                    <p>Search for courses and events by keyword within the PlusPlus catalog.</p>
+
+                    <h4>Query Parameters</h4>
+                    <ul>
+                        <li><code>q</code> (string, required) - Search query</li>
+                        <li><code>limit</code> (integer, 1-200, default: 50) - Max results per category</li>
+                    </ul>
+
+                    <h4>Response</h4>
+                    <pre><code class="language-json">{
+  "query": "mulesoft",
+  "courses": [...],
+  "events": [...],
+  "total": 5
+}</code></pre>
+
+                    <h4>Examples</h4>
+                    <div class="tabs">
+                        <button class="tab-btn active" onclick="switchTab(event, 'search-bash')">Bash</button>
+                        <button class="tab-btn" onclick="switchTab(event, 'search-py')">Python</button>
+                    </div>
+                    <div id="search-bash" class="tab-content active">
+                        <pre><code class="language-bash"># Search for MuleSoft trainings
+curl "http://localhost:8000/api/search?q=mulesoft"
+
+# Search with custom limit
+curl "http://localhost:8000/api/search?q=agentcore&limit=100"</code></pre>
+                    </div>
+                    <div id="search-py" class="tab-content">
+                        <pre><code class="language-python">import requests
+
+response = requests.get("http://localhost:8000/api/search", params={"q": "mulesoft"})
+results = response.json()
+
+print(f"Found {results['total']} results")
+print(f"Courses: {len(results['courses'])}")
+print(f"Events: {len(results['events'])}")</code></pre>
+                    </div>
+                </section>
+
+                <!-- Unified Search -->
+                <section id="unified-search">
+                    <h3>Unified Search (Multi-Platform)</h3>
+                    <div class="endpoint">
+                        <span class="method get">GET</span>
+                        <code>/api/unified-search</code>
+                    </div>
+                    <p>Search across all training platforms (PlusPlus, Trailhead, Pluralsight, O'Reilly) simultaneously.</p>
+
+                    <h4>Query Parameters</h4>
+                    <ul>
+                        <li><code>q</code> (string, required) - Search query</li>
+                        <li><code>limit</code> (integer, 1-50, default: 10) - Results per source</li>
+                        <li><code>sources</code> (string, default: "all") - Comma-separated sources:
+                            <ul>
+                                <li><code>all</code> - Search all platforms</li>
+                                <li><code>trailhead</code> - Trailhead only</li>
+                                <li><code>pluralsight</code> - Pluralsight only</li>
+                                <li><code>oreilly</code> - O'Reilly only</li>
+                                <li><code>plusplus</code> - PlusPlus only</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <h4>Examples</h4>
+                    <pre><code class="language-bash"># Search all platforms
+curl "http://localhost:8000/api/unified-search?q=mulesoft"
+
+# Search specific platforms
+curl "http://localhost:8000/api/unified-search?q=mulesoft&sources=trailhead,pluralsight"
+
+# Increase results limit
+curl "http://localhost:8000/api/unified-search?q=agentcore&limit=25"</code></pre>
+                </section>
+            </section>
+
+            <!-- Authentication -->
+            <section id="authentication">
+                <h2>Authentication</h2>
+
+                <h3>Optional Bearer Token Authentication</h3>
+                <p>To require Bearer token authentication on requests:</p>
+
+                <h4>1. Set the auth key</h4>
+                <pre><code class="language-bash">export PLUSPLUS_API_AUTH_KEY="your-secret-key-here"</code></pre>
+
+                <h4>2. Include header in requests</h4>
+                <pre><code class="language-bash">curl -H "Authorization: Bearer your-secret-key-here" \
+  http://localhost:8000/api/courses</code></pre>
+
+                <h4>Python Example</h4>
+                <pre><code class="language-python">import requests
+
+headers = {"Authorization": "Bearer your-secret-key-here"}
+response = requests.get("http://localhost:8000/api/courses", headers=headers)
+print(response.json())</code></pre>
+
+                <div class="note">
+                    <strong>Note:</strong> If <code>PLUSPLUS_API_AUTH_KEY</code> is not set, authentication is disabled and all requests are public.
+                </div>
+            </section>
+
+            <!-- Slack Integration -->
+            <section id="slack">
+                <h2>Slack Integration</h2>
+
+                <h3>Setup</h3>
+                <ol>
+                    <li>Create a Slack app at https://api.slack.com/apps</li>
+                    <li>Add slash command <code>/plusplus</code> pointing to <code>http://your-server:8000/slack/slash</code></li>
+                    <li>Copy the signing secret to <code>SLACK_SIGNING_SECRET</code> env var</li>
+                    <li>Install app to workspace</li>
+                    <li>Start the API server</li>
+                </ol>
+
+                <h3>Slash Commands</h3>
+                <p>Once installed, use <code>/plusplus</code> in any Slack channel:</p>
+
+                <pre><code class="language-bash">/plusplus courses              # List all courses
+/plusplus events               # List all upcoming events
+/plusplus search mulesoft      # Search for "mulesoft" courses/events</code></pre>
+
+                <h4>Examples</h4>
+                <pre><code class="language-bash">/plusplus search agentcore     # Search for AgentCore trainings
+/plusplus search salescloud    # Search for Sales Cloud courses
+/plusplus courses              # View full course catalog</code></pre>
+            </section>
+
+            <!-- Deployment -->
+            <section id="deployment">
+                <h2>Deployment</h2>
+
+                <h3>Docker</h3>
+                <pre><code class="language-bash"># Build image
+docker build -t plusplus-api .
+
+# Run container
+docker run -e PLUSPLUS_API_KEY=your_key \
+  -e SLACK_SIGNING_SECRET=your_secret \
+  -p 8000:8000 \
+  plusplus-api</code></pre>
+
+                <h3>Google Cloud Run</h3>
+                <pre><code class="language-bash">gcloud run deploy plusplus-api \
+  --source . \
+  --set-env-vars PLUSPLUS_API_KEY=your_key,SLACK_SIGNING_SECRET=your_secret \
+  --platform managed \
+  --region us-central1</code></pre>
+
+                <h3>Kubernetes</h3>
+                <pre><code class="language-bash"># Create secret
+kubectl create secret generic plusplus-secrets \
+  --from-literal=PLUSPLUS_API_KEY=your_key \
+  --from-literal=SLACK_SIGNING_SECRET=your_secret
+
+# Deploy
+kubectl apply -f k8s-deployment.yaml</code></pre>
+            </section>
+
+            <!-- Use Cases -->
+            <section id="use-cases">
+                <h2>Common Use Cases</h2>
+
+                <h3>List All MuleSoft Trainings</h3>
+                <pre><code class="language-python">import requests
+
+response = requests.get("http://localhost:8000/api/search?q=mulesoft")
+data = response.json()
+
+print(f"Found {data['total']} results")
+for course in data['courses']:
+    print(f"Course: {course['name']}")
+for event in data['events']:
+    print(f"Event: {event['name']}")</code></pre>
+
+                <h3>Find Training Across All Platforms</h3>
+                <pre><code class="language-bash">curl "http://localhost:8000/api/unified-search?q=salescloud"</code></pre>
+
+                <h3>Get User's Current Enrollments</h3>
+                <pre><code class="language-python">response = requests.get("http://localhost:8000/api/enrollments")
+enrollments = response.json()["data"]
+
+for enrollment in enrollments:
+    print(f"{enrollment['course_name']}: {enrollment['progress']}% complete")</code></pre>
+
+                <h3>Paginate Through Courses</h3>
+                <pre><code class="language-python">import requests
+
+all_courses = []
+limit = 100
+offset = 0
+
+while True:
+    response = requests.get(
+        "http://localhost:8000/api/courses",
+        params={"limit": limit, "offset": offset}
+    )
+    data = response.json()
+    all_courses.extend(data["data"])
+
+    if len(data["data"]) < limit:
+        break
+
+    offset += limit
+
+print(f"Total courses: {len(all_courses)}")</code></pre>
+            </section>
+
+            <!-- Error Handling -->
+            <section id="errors">
+                <h2>Error Handling</h2>
+
+                <h3>HTTP Status Codes</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Status</th>
+                            <th>Meaning</th>
+                            <th>Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>200</td>
+                            <td>Success</td>
+                            <td>Request completed</td>
+                        </tr>
+                        <tr>
+                            <td>401</td>
+                            <td>Unauthorized</td>
+                            <td>Invalid/missing Bearer token</td>
+                        </tr>
+                        <tr>
+                            <td>400</td>
+                            <td>Bad Request</td>
+                            <td>Invalid query parameters</td>
+                        </tr>
+                        <tr>
+                            <td>502</td>
+                            <td>Bad Gateway</td>
+                            <td>PlusPlus API unreachable</td>
+                        </tr>
+                        <tr>
+                            <td>500</td>
+                            <td>Server Error</td>
+                            <td>Internal API error</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Error Handling in Python</h3>
+                <pre><code class="language-python">import requests
+
+try:
+    response = requests.get("http://localhost:8000/api/courses")
+    response.raise_for_status()
+    data = response.json()
+except requests.exceptions.HTTPError as e:
+    print(f"HTTP Error: {e.response.status_code} - {e.response.text}")
+except requests.exceptions.ConnectionError:
+    print("Failed to connect to API")</code></pre>
+            </section>
+
+            <!-- Troubleshooting -->
+            <section id="troubleshooting">
+                <h2>Troubleshooting</h2>
+
+                <h3>Server Won't Start</h3>
+                <div class="error">
+                    <strong>Error:</strong> <code>ModuleNotFoundError: No module named 'fastapi'</code>
+                </div>
+                <p><strong>Solution:</strong></p>
+                <pre><code class="language-bash">pip install -r requirements.txt</code></pre>
+
+                <h3>502 Bad Gateway</h3>
+                <p><strong>Problem:</strong> The PlusPlus API is unreachable</p>
+                <p><strong>Solutions:</strong></p>
+                <ul>
+                    <li>Check <code>PLUSPLUS_BASE_URL</code> is correct</li>
+                    <li>Verify <code>PLUSPLUS_API_KEY</code> is valid</li>
+                    <li>Ensure network connectivity to PlusPlus</li>
+                </ul>
+
+                <h3>401 Unauthorized</h3>
+                <p><strong>Problem:</strong> Bearer token authentication failed</p>
+                <p><strong>Solutions:</strong></p>
+                <ul>
+                    <li>Verify header format: <code>Authorization: Bearer &lt;token&gt;</code></li>
+                    <li>Check <code>PLUSPLUS_API_AUTH_KEY</code> matches exactly</li>
+                    <li>Ensure token is set and not empty</li>
+                </ul>
+
+                <h3>Slack Command Doesn't Respond</h3>
+                <p><strong>Problem:</strong> <code>/plusplus</code> command fails silently</p>
+                <p><strong>Solutions:</strong></p>
+                <ul>
+                    <li>Check server is running: <code>curl http://localhost:8000/health</code></li>
+                    <li>Verify <code>SLACK_SIGNING_SECRET</code> is set correctly</li>
+                    <li>Ensure Request URL in Slack app matches your server</li>
+                    <li>Check firewall/networking allows Slack requests</li>
+                </ul>
+            </section>
+        </main>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 PlusPlus API Documentation. Built with ❤️ for Salesforce training.</p>
+    </footer>
+
+    <script>
+        // Syntax highlighting
+        document.querySelectorAll('pre code').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Tab switching
+        function switchTab(event, tabId) {
+            const buttons = event.target.parentElement.querySelectorAll('.tab-btn');
+            const contents = event.target.parentElement.parentElement.querySelectorAll('.tab-content');
+
+            buttons.forEach(btn => btn.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Headless Training Dashboard - Architecture Presentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #1a1a1a;
+            overflow: hidden;
+        }
+
+        .presentation {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+            height: 100%;
+            padding: 80px 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            animation: slideIn 0.5s ease-in-out;
+            position: absolute;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(100px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Slide variations */
+        .slide.title {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .slide.content-1 {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .slide.content-2 {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .slide.content-3 {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .slide.content-4 {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .slide.content-5 {
+            background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+        }
+
+        .slide.content-6 {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #333;
+        }
+
+        .slide.content-7 {
+            background: linear-gradient(135deg, #ff9a56 0%, #ff6a88 100%);
+        }
+
+        h1 {
+            font-size: 4em;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        h2 {
+            font-size: 3em;
+            margin-bottom: 40px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .subtitle {
+            font-size: 1.5em;
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+
+        .content {
+            font-size: 1.3em;
+            line-height: 1.8;
+            max-width: 1200px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            font-size: 1.2em;
+            line-height: 1.7;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 30px;
+            font-size: 1.1em;
+        }
+
+        .box {
+            background: rgba(255,255,255,0.15);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .box h3 {
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .box p {
+            font-size: 1em;
+            line-height: 1.6;
+        }
+
+        .icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 15px 20px;
+            text-align: left;
+            font-size: 1.1em;
+        }
+
+        th {
+            background: rgba(255,255,255,0.2);
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .diagram {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 15px;
+            font-family: monospace;
+            font-size: 1em;
+            line-height: 1.5;
+            white-space: pre;
+            overflow-x: auto;
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        button {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+            padding: 12px 30px;
+            font-size: 1.1em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        button:hover {
+            background: rgba(255,255,255,0.4);
+            transform: scale(1.05);
+        }
+
+        button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: scale(1);
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 20px;
+            right: 30px;
+            font-size: 1.2em;
+            background: rgba(0,0,0,0.3);
+            padding: 10px 20px;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+        }
+
+        .highlight {
+            background: rgba(255,255,255,0.3);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        ul, ol {
+            margin-left: 40px;
+            font-size: 1.2em;
+            line-height: 2;
+        }
+
+        li {
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.4em;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            border-left: 5px solid rgba(255,255,255,0.8);
+            padding-left: 20px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Slide 1: Title -->
+        <div class="slide title active">
+            <h1>🎓 Headless Training Dashboard</h1>
+            <p class="subtitle">Unified Analytics Platform for Enterprise Learning<br><br>
+            Integrating PlusPlus, Pluralsight, Trailhead & O'Reilly</p>
+        </div>
+
+        <!-- Slide 2: Project Overview -->
+        <div class="slide content-1">
+            <h2>Project Overview</h2>
+            <div class="grid-2">
+                <div class="box">
+                    <div class="icon">📊</div>
+                    <h3>What It Does</h3>
+                    <p>Aggregates training data from 4 platforms and displays comprehensive analytics on completion rates, costs, engagement, effectiveness, and compliance.</p>
+                </div>
+                <div class="box">
+                    <div class="icon">🎯</div>
+                    <h3>Who Uses It</h3>
+                    <p>L&D leaders, department managers, and executives tracking training ROI, budget spend, and employee skill development across the organization.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Training Platforms -->
+        <div class="slide content-2">
+            <h2>📚 Connected Training Platforms</h2>
+            <div class="grid-4">
+                <div class="box">
+                    <div class="icon">⚡</div>
+                    <h3>PlusPlus (Learn++)</h3>
+                    <p><strong>Org-wide tracking</strong><br>Assignments, enrollments, adoption metrics</p>
+                </div>
+                <div class="box">
+                    <div class="icon">⭐</div>
+                    <h3>Pluralsight</h3>
+                    <p><strong>Ratings & Progress</strong><br>Course feedback, completion tracking</p>
+                </div>
+                <div class="box">
+                    <div class="icon">🏆</div>
+                    <h3>Trailhead</h3>
+                    <p><strong>Salesforce Certs</strong><br>Certification catalog (MCP)</p>
+                </div>
+                <div class="box">
+                    <div class="icon">📖</div>
+                    <h3>O'Reilly</h3>
+                    <p><strong>Tech Learning</strong><br>Books, videos, courses (MCP)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Architecture & Data Flow -->
+        <div class="slide content-3">
+            <h2>🏗️ System Architecture</h2>
+            <div class="content">
+                <div class="section-title">Data Flow Pipeline</div>
+                <div class="diagram">Training Platforms
+     ↓
+APIs (.env keys)
+     ↓
+platform_connectors.py (Aggregation Layer)
+     ↓
+Normalized Schema
+     ↓
+Configuration Files (Costs, Certs)
+     ↓
+Streamlit Dashboard (5 Analytics Sections)
+     ↓
+Live Browser UI (http://localhost:8501)</div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Dashboard Sections -->
+        <div class="slide content-4">
+            <h2>📈 Dashboard Sections</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Section</th>
+                        <th>Metrics</th>
+                        <th>Data Source</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1️⃣ Completion & Status</strong></td>
+                        <td>Active, completed, overdue courses by department</td>
+                        <td>PlusPlus assignments</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2️⃣ Budget & Cost</strong></td>
+                        <td>Spend vs budget, cost-per-employee, ROI</td>
+                        <td>cost_mapping.json</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3️⃣ Engagement & Reach</strong></td>
+                        <td>Unique learners, active users, training hours</td>
+                        <td>PlusPlus metrics</td>
+                    </tr>
+                    <tr>
+                        <td><strong>4️⃣ Effectiveness & Feedback</strong></td>
+                        <td>Ratings, pass rates, performance impact</td>
+                        <td>Pluralsight + manual</td>
+                    </tr>
+                    <tr>
+                        <td><strong>5️⃣ Compliance & Expirations</strong></td>
+                        <td>Cert renewals, deadlines, status flags</td>
+                        <td>cert_expirations.json</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Slide 6: Configuration Files -->
+        <div class="slide content-5">
+            <h2>⚙️ Configuration & Setup</h2>
+            <div class="grid-2">
+                <div>
+                    <div class="section-title">.env (API Keys)</div>
+                    <ul style="list-style: none;">
+                        <li>✅ PLUSPLUS_API_KEY</li>
+                        <li>✅ PLURALSIGHT_API_KEY</li>
+                        <li>✅ TRAILHEAD_MCP_URL</li>
+                        <li>✅ OREILLY_MCP_URL</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="section-title">Configuration Files</div>
+                    <ul style="list-style: none;">
+                        <li>📊 cost_mapping.json<br><span style="font-size: 0.9em;">Cost/employee by platform</span></li>
+                        <li>📅 cert_expirations.json<br><span style="font-size: 0.9em;">Manual cert renewal tracker</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: How It Works -->
+        <div class="slide content-6">
+            <h2>🔄 How It Works</h2>
+            <ol>
+                <li><span class="highlight">User opens browser</span> → http://localhost:8501</li>
+                <li><span class="highlight">Dashboard loads</span> → Reads .env and config files</li>
+                <li><span class="highlight">Connectors initialize</span> → Authenticate to 4 platforms</li>
+                <li><span class="highlight">Data aggregated</span> → platform_connectors.py normalizes all data</li>
+                <li><span class="highlight">Live metrics displayed</span> → 5 analytics sections render</li>
+                <li><span class="highlight">Admin panel edits</span> → User can adjust cost mapping in real-time</li>
+                <li><span class="highlight">Charts & tables update</span> → Full interactivity with filters & drill-downs</li>
+            </ol>
+        </div>
+
+        <!-- Slide 8: Quick Start -->
+        <div class="slide content-7">
+            <h2>🚀 Quick Start</h2>
+            <div class="content">
+                <div class="section-title">Installation & Running</div>
+                <pre style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 10px; font-size: 1.1em; line-height: 1.6;">cd C:\Users\dvoigtlander\claude\Headless_Training
+
+pip install -r requirements.txt
+
+streamlit run dashboard.py</pre>
+                <div class="section-title" style="margin-top: 40px;">Access Points</div>
+                <ul>
+                    <li><strong>Local:</strong> http://localhost:8501</li>
+                    <li><strong>Network:</strong> http://192.168.1.198:8501</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide-counter">
+        <span id="current">1</span> / <span id="total">8</span>
+    </div>
+
+    <div class="controls">
+        <button id="prev" onclick="prevSlide()">← Previous</button>
+        <button id="next" onclick="nextSlide()">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+
+            document.getElementById('current').textContent = currentSlide + 1;
+            document.getElementById('prev').disabled = currentSlide === 0;
+            document.getElementById('next').disabled = currentSlide === totalSlides - 1;
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) showSlide(currentSlide + 1);
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) showSlide(currentSlide - 1);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        showSlide(0);
+    </script>
+</body>
+</html>

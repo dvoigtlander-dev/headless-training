@@ -1,0 +1,79 @@
+{
+  "timestamp": "2026-10-02T12:32:49.749796",
+  "last_updated_by": "mcp_data_fetcher",
+  "platforms": {
+    "plusplus": {
+      "note": "PlusPlus data not available - using fallback"
+    },
+    "trailhead": {
+      "total_enrollments": 1137,
+      "total_completions": 850,
+      "completion_rate": 74.7,
+      "active_learners": 450,
+      "top_courses": [
+        {
+          "title": "Salesforce Fundamentals",
+          "enrollments": 342,
+          "completions": 255
+        },
+        {
+          "title": "Advanced Apex Development",
+          "enrollments": 287,
+          "completions": 214
+        },
+        {
+          "title": "Lightning Web Components",
+          "enrollments": 265,
+          "completions": 198
+        }
+      ]
+    },
+    "pluralsight": {
+      "total_enrollments": 488,
+      "total_completions": 334,
+      "completion_rate": 68.4,
+      "active_learners": 220,
+      "top_courses": [
+        {
+          "title": "Python for Developers",
+          "enrollments": 198,
+          "completions": 135
+        },
+        {
+          "title": "Docker Fundamentals",
+          "enrollments": 156,
+          "completions": 107
+        },
+        {
+          "title": "Cloud Architecture",
+          "enrollments": 134,
+          "completions": 92
+        }
+      ]
+    },
+    "oreilly": {
+      "total_enrollments": 213,
+      "total_completions": 130,
+      "completion_rate": 61.0,
+      "active_learners": 95,
+      "top_courses": [
+        {
+          "title": "Learning Python",
+          "enrollments": 124,
+          "completions": 76
+        },
+        {
+          "title": "Kubernetes Best Practices",
+          "enrollments": 89,
+          "completions": 54
+        }
+      ]
+    }
+  },
+  "notes": {
+    "plusplus": "Real data from MCP when available",
+    "trailhead": "Mock data - awaiting enrollment analytics MCP",
+    "pluralsight": "Mock data - awaiting enrollment analytics MCP",
+    "oreilly": "Mock data - awaiting enrollment analytics MCP"
+  }
+}

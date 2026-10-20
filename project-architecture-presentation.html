@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Headless Training Project - Complete Architecture</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #0f0f0f;
+            overflow: hidden;
+        }
+
+        .presentation {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+            height: 100%;
+            padding: 80px 60px;
+            color: white;
+            animation: slideIn 0.5s ease-in-out;
+            position: absolute;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(100px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Slide color variations */
+        .slide-1 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .slide-2 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .slide-3 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .slide-4 { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        .slide-5 { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        .slide-6 { background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); }
+        .slide-7 { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); color: #333; }
+        .slide-8 { background: linear-gradient(135deg, #ff9a56 0%, #ff6a88 100%); }
+        .slide-9 { background: linear-gradient(135deg, #fbc 0%, #765 100%); }
+        .slide-10 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+
+        h1 {
+            font-size: 4em;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        h2 {
+            font-size: 3em;
+            margin-bottom: 40px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .subtitle {
+            font-size: 1.5em;
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+
+        .content {
+            font-size: 1.3em;
+            line-height: 1.8;
+            max-width: 1200px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 30px;
+        }
+
+        .box {
+            background: rgba(255,255,255,0.15);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .box h3 {
+            font-size: 1.4em;
+            margin-bottom: 15px;
+        }
+
+        .box p {
+            font-size: 1em;
+            line-height: 1.6;
+        }
+
+        .icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .component {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-size: 1.1em;
+            border-left: 5px solid rgba(255,255,255,0.5);
+        }
+
+        .component strong {
+            display: block;
+            font-size: 1.2em;
+            margin-bottom: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            font-size: 1.05em;
+        }
+
+        th, td {
+            padding: 15px 20px;
+            text-align: left;
+        }
+
+        th {
+            background: rgba(255,255,255,0.2);
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .flow {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 15px;
+            font-family: monospace;
+            font-size: 1.1em;
+            line-height: 2;
+            white-space: pre;
+            overflow-x: auto;
+            text-align: center;
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        button {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+            padding: 12px 30px;
+            font-size: 1.1em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        button:hover {
+            background: rgba(255,255,255,0.4);
+            transform: scale(1.05);
+        }
+
+        button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: scale(1);
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 20px;
+            right: 30px;
+            font-size: 1.2em;
+            background: rgba(0,0,0,0.3);
+            padding: 10px 20px;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+        }
+
+        ul, ol {
+            margin-left: 40px;
+            font-size: 1.2em;
+            line-height: 1.9;
+        }
+
+        li {
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.4em;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            border-left: 5px solid rgba(255,255,255,0.8);
+            padding-left: 20px;
+        }
+
+        .highlight {
+            background: rgba(255,255,255,0.3);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .connection {
+            font-size: 0.9em;
+            opacity: 0.85;
+            margin-top: 8px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Slide 1: Title -->
+        <div class="slide slide-1 active">
+            <h1>🎓 Headless Training Project</h1>
+            <p class="subtitle">Complete Architecture & System Design<br><br>
+            Unified API, Analytics Dashboard & Slack Integration</p>
+        </div>
+
+        <!-- Slide 2: Project Components -->
+        <div class="slide slide-2">
+            <h2>🏗️ Project Components</h2>
+            <div class="grid-3">
+                <div class="box">
+                    <div class="icon">⚡</div>
+                    <h3>PlusPlus API Server</h3>
+                    <p>FastAPI HTTP endpoint (port 8000) that proxies training platform requests and unifies multi-source data.</p>
+                </div>
+                <div class="box">
+                    <div class="icon">📊</div>
+                    <h3>Streamlit Dashboard</h3>
+                    <p>Analytics UI (port 8501) displaying completion rates, budgets, engagement, feedback, and compliance metrics.</p>
+                </div>
+                <div class="box">
+                    <div class="icon">💬</div>
+                    <h3>Slack Bot Integration</h3>
+                    <p>Slash command `/plusplus` for on-demand training searches and enrollment links in Slack.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Data Sources -->
+        <div class="slide slide-3">
+            <h2>📚 Connected Training Platforms</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Platform</th>
+                        <th>Integration Type</th>
+                        <th>Data Available</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>PlusPlus (Learn++)</strong></td>
+                        <td>REST API via .env key</td>
+                        <td>Courses, events, assignments, enrollments, metrics</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Pluralsight</strong></td>
+                        <td>GraphQL API via .env key</td>
+                        <td>Course catalog, ratings, user progress, completion %</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Trailhead</strong></td>
+                        <td>MCP Server (auto OAuth)</td>
+                        <td>Salesforce cert catalog, modules, trails, badges</td>
+                    </tr>
+                    <tr>
+                        <td><strong>O'Reilly</strong></td>
+                        <td>MCP Server (auto OAuth)</td>
+                        <td>Books, videos, courses, certifications, learning paths</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Slide 4: Architecture Diagram -->
+        <div class="slide slide-4">
+            <h2>🔄 Complete System Flow</h2>
+            <div class="flow">┌─────────────────────────────────────────┐
+│   Training Platforms (4 Sources)      │
+│ PlusPlus, Pluralsight, Trailhead,O'Reilly
+└────────────────┬────────────────────┘
+                 │
+        ┌────────▼────────┐
+        │  .env (API Keys)│
+        │  MCP Credentials│
+        └────────┬────────┘
+                 │
+        ┌────────▼────────────────────┐
+        │ platform_connectors.py       │
+        │ (Data Aggregation Layer)     │
+        └────────┬────────────────────┘
+                 │
+        ┌────────┴────────┐
+        │                 │
+   ┌────▼────┐      ┌────▼─────────┐
+   │ FastAPI │      │  Streamlit   │
+   │ Server  │      │  Dashboard   │
+   │(8000)   │      │  (8501)      │
+   └────┬────┘      └────┬─────────┘
+        │                │
+   ┌────▼────┐      ┌────▼─────────┐
+   │  Slack  │      │  Config Files │
+   │Slash Cmd│      │ costs, certs  │
+   └─────────┘      └───────────────┘</div>
+        </div>
+
+        <!-- Slide 5: FastAPI Server (main.py) -->
+        <div class="slide slide-5">
+            <h2>⚡ PlusPlus API Server (main.py)</h2>
+            <div class="component">
+                <strong>Runs on: localhost:8000</strong>
+                FastAPI server proxying requests to PlusPlus + integrating Trailhead, Pluralsight, O'Reilly via MCP
+            </div>
+            <div class="section-title">Key Endpoints</div>
+            <ul style="font-size: 1.1em;">
+                <li><span class="highlight">/api/courses</span> — All training courses</li>
+                <li><span class="highlight">/api/events</span> — Upcoming training sessions</li>
+                <li><span class="highlight">/api/enrollments</span> — User enrollments</li>
+                <li><span class="highlight">/api/assignments</span> — User assignments</li>
+                <li><span class="highlight">/api/search</span> — Search PlusPlus catalog</li>
+                <li><span class="highlight">/api/unified-search</span> — Search all 4 platforms</li>
+                <li><span class="highlight">/slack/slash</span> — Slack integration endpoint</li>
+            </ul>
+        </div>
+
+        <!-- Slide 6: Dashboard (dashboard.py) -->
+        <div class="slide slide-6">
+            <h2>📊 Streamlit Dashboard (dashboard.py)</h2>
+            <div class="section-title">Five Analytics Sections</div>
+            <table style="font-size: 1em;">
+                <thead>
+                    <tr>
+                        <th>Section</th>
+                        <th>Key Metrics</th>
+                        <th>Data Source</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Completion & Status</strong></td>
+                        <td>Active, completed, overdue by dept</td>
+                        <td>PlusPlus</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Budget & Cost</strong></td>
+                        <td>Spend, cost/employee, ROI</td>
+                        <td>cost_mapping.json</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Engagement & Reach</strong></td>
+                        <td>Active users, training hours</td>
+                        <td>PlusPlus metrics</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Effectiveness & Feedback</strong></td>
+                        <td>Ratings, pass rates, performance</td>
+                        <td>Pluralsight + manual</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Compliance & Expirations</strong></td>
+                        <td>Cert renewals, deadlines</td>
+                        <td>cert_expirations.json</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Slide 7: Configuration & Files -->
+        <div class="slide slide-7">
+            <h2>📁 Configuration Files</h2>
+            <div class="grid-2">
+                <div class="box">
+                    <h3>.env</h3>
+                    <p><strong>API Credentials:</strong></p>
+                    <ul style="margin-left: 20px; font-size: 0.95em;">
+                        <li>PLUSPLUS_API_KEY</li>
+                        <li>PLURALSIGHT_API_KEY</li>
+                        <li>TRAILHEAD_MCP_URL</li>
+                        <li>OREILLY_MCP_URL</li>
+                        <li>SLACK_SIGNING_SECRET</li>
+                    </ul>
+                </div>
+                <div class="box">
+                    <h3>Config JSONs</h3>
+                    <p><strong>cost_mapping.json:</strong><br>Cost per employee by platform</p>
+                    <p style="margin-top: 15px;"><strong>cert_expirations.json:</strong><br>Manual cert renewal tracking</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Slack Integration -->
+        <div class="slide slide-8">
+            <h2>💬 Slack Integration</h2>
+            <div class="section-title">How It Works</div>
+            <ol style="font-size: 1.15em;">
+                <li>User types <span class="highlight">/plusplus search mulesoft</span> in Slack</li>
+                <li>Slack sends request to /slack/slash endpoint</li>
+                <li>Server verifies signing secret & queries 4 platforms in parallel</li>
+                <li>Results formatted as Slack message with enrollment links</li>
+                <li>Posted back to user's channel or DM</li>
+            </ol>
+            <div class="section-title">Available Commands</div>
+            <ul style="font-size: 1.1em;">
+                <li><span class="highlight">/plusplus courses</span> — List all courses</li>
+                <li><span class="highlight">/plusplus events</span> — List upcoming events</li>
+                <li><span class="highlight">/plusplus search &lt;query&gt;</span> — Search all platforms</li>
+            </ul>
+        </div>
+
+        <!-- Slide 9: Deployment & Running -->
+        <div class="slide slide-9">
+            <h2>🚀 Running the Project</h2>
+            <div class="section-title">Local Development</div>
+            <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 10px; font-family: monospace; font-size: 1.1em; line-height: 1.8;">
+cd C:\Users\dvoigtlander\claude\Headless_Training
+
+# Terminal 1: FastAPI Server (http://localhost:8000)
+python main.py
+
+# Terminal 2: Streamlit Dashboard (http://localhost:8501)
+streamlit run dashboard.py
+            </div>
+            <div class="section-title">Docker Deployment</div>
+            <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 10px; font-family: monospace; font-size: 1.05em; line-height: 1.6;">
+docker build -t headless-training .
+
+docker run -e PLUSPLUS_API_KEY=xxx \
+  -p 8000:8000 -p 8501:8501 \
+  headless-training
+            </div>
+        </div>
+
+        <!-- Slide 10: Project Summary -->
+        <div class="slide slide-10">
+            <h2>📋 Project Summary</h2>
+            <div class="grid-2">
+                <div class="box">
+                    <h3>What It Solves</h3>
+                    <ul style="margin-left: 20px; font-size: 1.1em;">
+                        <li>Fragmented training data across 4 platforms</li>
+                        <li>No unified ROI/budget tracking</li>
+                        <li>Manual cert renewal management</li>
+                        <li>Hard to discover training options</li>
+                    </ul>
+                </div>
+                <div class="box">
+                    <h3>Key Features</h3>
+                    <ul style="margin-left: 20px; font-size: 1.1em;">
+                        <li>✅ 5 interactive dashboards</li>
+                        <li>✅ Slack integration for discovery</li>
+                        <li>✅ Real-time cost tracking</li>
+                        <li>✅ Cert expiration alerts</li>
+                        <li>✅ Multi-platform search</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide-counter">
+        <span id="current">1</span> / <span id="total">10</span>
+    </div>
+
+    <div class="controls">
+        <button id="prev" onclick="prevSlide()">← Previous</button>
+        <button id="next" onclick="nextSlide()">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+
+            document.getElementById('current').textContent = currentSlide + 1;
+            document.getElementById('prev').disabled = currentSlide === 0;
+            document.getElementById('next').disabled = currentSlide === totalSlides - 1;
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) showSlide(currentSlide + 1);
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) showSlide(currentSlide - 1);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        showSlide(0);
+    </script>
+</body>
+</html>

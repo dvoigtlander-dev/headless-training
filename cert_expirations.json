@@ -1,0 +1,37 @@
+[
+  {
+    "certification": "AWS Solutions Architect",
+    "employee": "John Smith",
+    "department": "Engineering",
+    "expires": "2024-09-15",
+    "status": "Expired"
+  },
+  {
+    "certification": "Salesforce Admin",
+    "employee": "Jane Doe",
+    "department": "Sales",
+    "expires": "2024-09-20",
+    "status": "Expired"
+  },
+  {
+    "certification": "Google Cloud Professional",
+    "employee": "Mike Johnson",
+    "department": "Engineering",
+    "expires": "2024-09-25",
+    "status": "Expiring Soon"
+  },
+  {
+    "certification": "Azure Administrator",
+    "employee": "Sarah Williams",
+    "department": "Operations",
+    "expires": "2024-10-05",
+    "status": "Expiring Soon"
+  },
+  {
+    "certification": "Tableau Desktop Specialist",
+    "employee": "Tom Brown",
+    "department": "Finance",
+    "expires": "2024-11-15",
+    "status": "Current"
+  }
+]

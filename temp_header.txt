@@ -1,0 +1,200 @@
+import streamlit as st
+import pandas as pd
+import plotly.graph_objects as go
+import plotly.express as px
+from datetime import datetime, timedelta
+import json
+from pathlib import Path
+import requests
+from functools import lru_cache
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+# Helper function for styled collapsible section headers
+def section_header(number, title, emoji=""):
+    return st.expander(f"{emoji} {number} {title}", expanded=True)
+
+# Page config
+st.set_page_config(
+    page_title="Salesforce Training Analytics",
+    layout="wide",
+    initial_sidebar_state="expanded",
+    page_icon="☁️"
+)
+
+# Salesforce color palette
+SF_BLUE = "#0070D2"
+SF_LIGHT_BLUE = "#00A1DE"
+SF_DARK_BLUE = "#003D7A"
+SF_GREEN = "#04844B"
+SF_ORANGE = "#FF6B6B"
+SF_COLORS = ["#0070D2", "#00A1DE", "#1589EE", "#003D7A"]
+SF_GRADIENT = ["#003D7A", "#0070D2", "#00A1DE", "#FFFFFF"]
+
+# Platform-specific colors
+PLATFORM_COLORS = {
+    "plusplus": "#2D7A4A",      # Dark Green
+    "trailhead": "#9DB93F",     # Olive Green
+    "pluralsight": "#F59E42",   # Orange
+    "oreilly": "#FF6B7A"        # Coral Red
+}
+
+# ============================================================================
+# CONFIGURATION
+# ============================================================================
+
+# Joe Inzerillo's departments
+JOE_DEPARTMENTS = ["Engineering", "Product", "DevOps", "Platform"]
+
+# API endpoints
+API_BASE = "http://localhost:8008"
+
+# ============================================================================
+# API CLIENTS
+# ============================================================================
+
+@lru_cache(maxsize=1)
+def fetch_reach_participation():
+    """Fetch reach and participation metrics"""
+    try:
+        resp = requests.get(f"{API_BASE}/api/reach-participation", timeout=10)
+        if resp.status_code == 200:
+            return resp.json()
+    except Exception as e:
+        st.warning(f"Reach & Participation API error: {e}")
+    return {}
+
+@lru_cache(maxsize=1)
+def fetch_engagement_quality():
+    """Fetch engagement quality metrics (NPS and feedback)"""
+    try:
+        resp = requests.get(f"{API_BASE}/api/engagement-quality", timeout=10)
+        if resp.status_code == 200:
+            return resp.json()
+    except Exception as e:
+        st.warning(f"Engagement Quality API error: {e}")
+    return {}
+
+@lru_cache(maxsize=1)
+def fetch_all_courses():
+    """Fetch courses from all platforms"""
+    try:
+        resp = requests.get(f"{API_BASE}/api/all-courses?limit=200", timeout=10)
+        if resp.status_code == 200:
+            return resp.json()
+    except Exception as e:
+        st.warning(f"Courses API error: {e}")
+    return {"courses": [], "total": 0}
+
+@lru_cache(maxsize=1)
+def fetch_platform_stats():
+    """Fetch aggregated stats from all platforms"""
+    try:
+        resp = requests.get(f"{API_BASE}/api/stats", timeout=10)
+        if resp.status_code == 200:
+            return resp.json()
+    except Exception as e:
+        st.warning(f"Stats API error: {e}")
+    return {"platforms": {}, "totals": {}}
+
+def fetch_department_stats(department):
+    """Fetch stats for a specific department"""
+    try:
+        resp = requests.get(f"{API_BASE}/api/departments/{department}", timeout=10)
+        if resp.status_code == 200:
+            return resp.json()
+    except Exception as e:
+        st.warning(f"Department stats error: {e}")
+    return {}
+
+@lru_cache(maxsize=1)
+def fetch_knowledge_outcomes():
+    """Fetch knowledge & skill outcomes metrics"""
+    try:
+        resp = requests.get(f"{API_BASE}/api/knowledge-outcomes", timeout=10)
+        if resp.status_code == 200:
+            return resp.json()
+    except Exception as e:
+        st.warning(f"Knowledge outcomes API error: {e}")
+    return {}
+
+@lru_cache(maxsize=1)
+def fetch_business_impact():
+    """Fetch business impact and ROI metrics"""
+    try:
+        resp = requests.get(f"{API_BASE}/api/business-impact", timeout=10)
+        if resp.status_code == 200:
+            return resp.json()
+    except Exception as e:
+        st.warning(f"Business impact API error: {e}")
+    return {}
+
+@lru_cache(maxsize=1)
+def fetch_operational_health():
+    """Fetch operational health metrics"""
+    try:
+        resp = requests.get(f"{API_BASE}/api/operational-health", timeout=10)
+        if resp.status_code == 200:
+            return resp.json()
+    except Exception as e:
+        st.warning(f"Operational health API error: {e}")
+    return {}
+
+@lru_cache(maxsize=1)
+def fetch_trends_cohorts():
+    """Fetch trends and cohort analysis"""
+    try:
+        resp = requests.get(f"{API_BASE}/api/trends-cohorts", timeout=10)
+        if resp.status_code == 200:
+            return resp.json()
+    except Exception as e:
+        st.warning(f"Trends & cohorts API error: {e}")
+    return {}
+
+# ============================================================================
+# SIDEBAR CONTROLS
+# ============================================================================
+
+st.sidebar.title("🎓 Dashboard Controls")
+
+# Department selector
+selected_depts = st.sidebar.multiselect(
+    "Joe Inzerillo's Departments",
+    JOE_DEPARTMENTS,
+    default=JOE_DEPARTMENTS
+)
+
+# Date range
+col1, col2 = st.sidebar.columns(2)
+with col1:
+    start_date = st.date_input("Start Date", datetime.now() - timedelta(days=90))
+with col2:
+    end_date = st.date_input("End Date", datetime.now())
+
+st.sidebar.divider()
+
+# Platform toggles
+st.sidebar.subheader("📚 Platforms")
+show_plusplus = st.sidebar.checkbox("PlusPlus (Learn++)", value=True)
+show_trailhead = st.sidebar.checkbox("Trailhead", value=True)
+show_pluralsight = st.sidebar.checkbox("Pluralsight", value=True)
+show_oreilly = st.sidebar.checkbox("O'Reilly", value=True)
+
+st.sidebar.divider()
+
+# Refresh button
+if st.sidebar.button("🔄 Refresh Data", use_container_width=True):
+    st.cache_data.clear()
+    st.rerun()
+
+# ============================================================================
+# MAIN DASHBOARD
+# ============================================================================
+
+col1, col2, col3 = st.columns([1, 2, 1])
+with col2:
+    st.image("salesforce logo.jpg", width=200)
+
+st.markdown(f"<h1 style='text-align: center; color: {SF_BLUE}; font-size: 2.5em; margin-top: 0;'>Training Analytics Dashboard</h1>", unsafe_allow_html=True)

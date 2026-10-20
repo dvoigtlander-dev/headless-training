@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Headless Training Platform - Executive Presentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Salesforce+Sans:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Salesforce Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f8f8f8;
+            overflow: hidden;
+            color: #333;
+        }
+
+        .presentation {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+            height: 100%;
+            padding: 60px 80px;
+            animation: slideIn 0.5s ease-in-out;
+            position: absolute;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Salesforce Color Palette */
+        .slide-1 { background: linear-gradient(135deg, #003D82 0%, #005DBD 100%); color: white; }
+        .slide-2 { background: linear-gradient(to bottom, #ffffff 0%, #f5f5f5 100%); color: #333; }
+        .slide-3 { background: linear-gradient(to bottom, #f8f8f8 0%, #ffffff 100%); color: #333; }
+        .slide-4 { background: linear-gradient(to bottom, #ffffff 0%, #f5f5f5 100%); color: #333; }
+        .slide-5 { background: linear-gradient(to bottom, #f8f8f8 0%, #ffffff 100%); color: #333; }
+        .slide-6 { background: linear-gradient(to bottom, #ffffff 0%, #f5f5f5 100%); color: #333; }
+        .slide-7 { background: linear-gradient(to bottom, #f8f8f8 0%, #ffffff 100%); color: #333; }
+        .slide-8 { background: linear-gradient(135deg, #00A1DF 0%, #0074D9 100%); color: white; }
+        .slide-9 { background: linear-gradient(to bottom, #ffffff 0%, #f5f5f5 100%); color: #333; }
+        .slide-10 { background: linear-gradient(to bottom, #f8f8f8 0%, #ffffff 100%); color: #333; }
+        .slide-11 { background: linear-gradient(135deg, #003D82 0%, #005DBD 100%); color: white; }
+
+        h1 {
+            font-size: 3.5em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-size: 2.8em;
+            font-weight: 700;
+            margin-bottom: 40px;
+            color: #003D82;
+        }
+
+        .slide-1 h1,
+        .slide-8 h1,
+        .slide-11 h1 {
+            color: white;
+        }
+
+        .slide-1 h2,
+        .slide-8 h2,
+        .slide-11 h2 {
+            color: white;
+        }
+
+        .subtitle {
+            font-size: 1.4em;
+            font-weight: 400;
+            opacity: 0.9;
+            line-height: 1.6;
+            max-width: 900px;
+        }
+
+        .slide-1 .subtitle {
+            color: rgba(255,255,255,0.95);
+            font-size: 1.35em;
+        }
+
+        .content {
+            font-size: 1.2em;
+            line-height: 1.8;
+            max-width: 1200px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            margin-top: 30px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 14px;
+            border: 1px solid #e0e0e0;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 61, 130, 0.06);
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 24px rgba(0, 93, 189, 0.12);
+            border-color: #00A1DF;
+            transform: translateY(-2px);
+        }
+
+        .card h3 {
+            font-size: 1.4em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #003D82;
+        }
+
+        .card p {
+            font-size: 1.05em;
+            line-height: 1.7;
+            color: #666;
+        }
+
+        .icon {
+            font-size: 2.8em;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: white;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            margin-top: 30px;
+        }
+
+        th {
+            background: linear-gradient(135deg, #003D82 0%, #005DBD 100%);
+            color: white;
+            padding: 22px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 20px 22px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 1.05em;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* Flowchart Styling */
+        .flowchart-container {
+            background: white;
+            padding: 50px;
+            border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(0, 61, 130, 0.08);
+            margin-top: 30px;
+        }
+
+        .flow-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .flow-box {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border: 2px solid #00A1DF;
+            border-radius: 12px;
+            padding: 20px 30px;
+            font-weight: 600;
+            font-size: 1.1em;
+            color: #003D82;
+            min-width: 280px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 161, 223, 0.15);
+        }
+
+        .flow-arrow {
+            font-size: 2em;
+            color: #00A1DF;
+            margin: 15px 0;
+            font-weight: 300;
+        }
+
+        .platform-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .platform-box {
+            background: linear-gradient(135deg, #e7f3ff 0%, #f0f8ff 100%);
+            border: 2px solid #00A1DF;
+            border-radius: 10px;
+            padding: 18px;
+            text-align: center;
+            font-weight: 600;
+            color: #003D82;
+            font-size: 1.05em;
+            box-shadow: 0 2px 8px rgba(0, 161, 223, 0.1);
+        }
+
+        .config-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .config-box {
+            background: linear-gradient(135deg, #fff8e1 0%, #fffde7 100%);
+            border: 2px solid #ffb300;
+            border-radius: 10px;
+            padding: 18px;
+            text-align: center;
+            font-weight: 600;
+            color: #f57f17;
+            font-size: 1.05em;
+            box-shadow: 0 2px 8px rgba(255, 179, 0, 0.1);
+        }
+
+        .output-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .output-box {
+            background: linear-gradient(135deg, #e3f2fd 0%, #e8eaf6 100%);
+            border: 2px solid #1976d2;
+            border-radius: 10px;
+            padding: 22px;
+            text-align: center;
+            font-weight: 600;
+            color: #1565c0;
+            font-size: 1.1em;
+            box-shadow: 0 2px 10px rgba(25, 118, 210, 0.15);
+        }
+
+        .output-box-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .output-box-label {
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .output-box-port {
+            font-size: 0.85em;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e8e8e8;
+        }
+
+        .section h3 {
+            font-size: 1.6em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #003D82;
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+        }
+
+        button {
+            background: linear-gradient(135deg, #00A1DF 0%, #0088BB 100%);
+            color: white;
+            border: none;
+            padding: 14px 35px;
+            font-size: 1.05em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0, 161, 223, 0.3);
+        }
+
+        button:hover:not(:disabled) {
+            box-shadow: 0 6px 16px rgba(0, 161, 223, 0.4);
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 30px;
+            right: 40px;
+            font-size: 1.1em;
+            background: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            color: #003D82;
+            font-weight: 600;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+        }
+
+        ul {
+            margin-left: 35px;
+            font-size: 1.15em;
+            line-height: 2;
+        }
+
+        li {
+            margin-bottom: 10px;
+            color: #666;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #003D82;
+            font-weight: 500;
+        }
+
+        .feature-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            border-left: 5px solid #00A1DF;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .feature-check {
+            font-size: 1.8em;
+            color: #00A1DF;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .feature-text {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .stat-box {
+            background: white;
+            border: 2px solid #00A1DF;
+            padding: 28px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 15px 0;
+            box-shadow: 0 2px 12px rgba(0, 161, 223, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2.8em;
+            font-weight: 700;
+            color: #00A1DF;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 1.15em;
+            color: #003D82;
+            font-weight: 600;
+        }
+
+        .stat-detail {
+            font-size: 0.95em;
+            color: #777;
+            margin-top: 8px;
+        }
+
+        .blocker-warning {
+            background: linear-gradient(135deg, #fff3cd 0%, #fffde7 100%);
+            border: 2px solid #ffc107;
+            border-radius: 12px;
+            padding: 28px;
+            margin-top: 40px;
+            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.2);
+        }
+
+        .blocker-warning h3 {
+            color: #f57f17;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .blocker-warning p {
+            color: #e65100;
+            font-size: 1.1em;
+            line-height: 1.7;
+        }
+
+        .footer-text {
+            text-align: center;
+            margin-top: 80px;
+            font-size: 1.1em;
+            color: rgba(255,255,255,0.85);
+        }
+
+        .slide-8 .footer-text,
+        .slide-11 .footer-text {
+            color: rgba(255,255,255,0.85);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Slide 1: Title Slide -->
+        <div class="slide slide-1 active">
+            <div>
+                <h1>Headless Training Platform</h1>
+                <p class="subtitle">A unified learning analytics system that connects your entire training ecosystem—bringing clarity, insights, and control to employee development across the organization.</p>
+                <div class="footer-text">Digital Enterprise Technology</div>
+            </div>
+        </div>
+
+        <!-- Slide 2: The Challenge -->
+        <div class="slide slide-2">
+            <h2>The Challenge</h2>
+            <p class="subtitle" style="color: #666; margin-bottom: 40px;">Training data scattered across multiple platforms with no unified view</p>
+
+            <div class="grid-2">
+                <div class="card">
+                    <div class="icon">❌</div>
+                    <h3>Fragmented Data</h3>
+                    <p>Training information spread across PlusPlus, Pluralsight, Trailhead, and O'Reilly with no single source of truth.</p>
+                </div>
+                <div class="card">
+                    <div class="icon">📊</div>
+                    <h3>No ROI Visibility</h3>
+                    <p>Difficult to track budget spend, cost per employee, or training impact on performance.</p>
+                </div>
+                <div class="card">
+                    <div class="icon">⏰</div>
+                    <h3>Manual Compliance</h3>
+                    <p>Certification renewals and compliance deadlines tracked manually without automated alerts.</p>
+                </div>
+                <div class="card">
+                    <div class="icon">🔍</div>
+                    <h3>Discovery Friction</h3>
+                    <p>Employees have to search multiple platforms to find training options relevant to their role.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: The Solution -->
+        <div class="slide slide-3">
+            <h2>The Solution</h2>
+            <p class="subtitle" style="color: #666; margin-bottom: 40px;">A unified platform that aggregates all training sources and delivers actionable insights</p>
+
+            <div class="grid-3">
+                <div class="card">
+                    <div class="icon">🔗</div>
+                    <h3>Connected Sources</h3>
+                    <p>Pulls data from all 4 training platforms in real-time, creating a single integrated view of your training ecosystem.</p>
+                </div>
+                <div class="card">
+                    <div class="icon">📈</div>
+                    <h3>Smart Analytics</h3>
+                    <p>5 interactive dashboards showing completion rates, budget ROI, engagement metrics, and compliance status.</p>
+                </div>
+                <div class="card">
+                    <div class="icon">💬</div>
+                    <h3>Slack Integration</h3>
+                    <p>Employees find training and enroll directly from Slack using simple slash commands.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: System Architecture Flowchart -->
+        <div class="slide slide-4">
+            <h2>System Architecture & Data Flow</h2>
+            <p class="subtitle" style="color: #666; margin-bottom: 30px;">How all components work together seamlessly</p>
+
+            <div class="flowchart-container">
+                <div class="flow-step">
+                    <div style="font-size: 1.3em; color: #003D82; font-weight: 600; margin-bottom: 8px;">📚 Training Platforms</div>
+                    <div class="flow-box" style="min-width: 450px;">All Training Data Sources</div>
+                    <div class="flow-arrow">↓</div>
+
+                    <div class="platform-row">
+                        <div class="platform-box">PlusPlus</div>
+                        <div class="platform-box">Pluralsight</div>
+                        <div class="platform-box">Trailhead</div>
+                        <div class="platform-box">O'Reilly</div>
+                    </div>
+
+                    <div class="flow-arrow">↓</div>
+
+                    <div style="font-size: 1.3em; color: #f57f17; font-weight: 600; margin-bottom: 8px;">⚙️ Configuration Layer</div>
+                    <div class="config-row">
+                        <div class="config-box">🔑 API Keys (.env)</div>
+                        <div class="config-box">📋 Config Files</div>
+                    </div>
+
+                    <div class="flow-arrow">↓</div>
+
+                    <div class="flow-box" style="background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%); border-color: #4caf50; color: #2e7d32; min-width: 450px;">
+                        🔗 Data Aggregation Engine<br><span style="font-size: 0.85em; opacity: 0.8;">Unified Schema - Normalizes all platform data</span>
+                    </div>
+
+                    <div class="flow-arrow">↓</div>
+
+                    <div style="font-size: 1.3em; color: #1565c0; font-weight: 600; margin-bottom: 8px;">📤 Output & Delivery</div>
+                    <div class="output-row">
+                        <div class="output-box">
+                            <div class="output-box-icon">⚡</div>
+                            <div class="output-box-label">API Server</div>
+                            <div class="output-box-port">Port 8000</div>
+                        </div>
+                        <div class="output-box">
+                            <div class="output-box-icon">📊</div>
+                            <div class="output-box-label">Analytics</div>
+                            <div class="output-box-port">Port 8501</div>
+                        </div>
+                        <div class="output-box">
+                            <div class="output-box-icon">💬</div>
+                            <div class="output-box-label">Slack Bot</div>
+                            <div class="output-box-port">Live</div>
+                        </div>
+                    </div>
+
+                    <div class="flow-arrow">↓</div>
+
+                    <div class="flow-box" style="background: linear-gradient(135deg, #003D82 0%, #005DBD 100%); color: white; min-width: 450px; border-color: #005DBD;">
+                        👥 Users<br><span style="font-size: 0.85em; opacity: 0.9;">Leadership · Managers · Employees · L&D Teams</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Components -->
+        <div class="slide slide-5">
+            <h2>Three Core Components</h2>
+            <p class="subtitle" style="color: #666; margin-bottom: 40px;">Each component plays a critical role in the system</p>
+
+            <div class="grid-3">
+                <div class="card">
+                    <div class="icon">⚡</div>
+                    <h3>API Server</h3>
+                    <p><strong style="color: #003D82;">Port 8000</strong></p>
+                    <p>Central hub that connects to all 4 training platforms and makes their data available through a unified interface.</p>
+                    <p style="margin-top: 12px; font-size: 0.95em; color: #999;">FastAPI + Python</p>
+                </div>
+                <div class="card">
+                    <div class="icon">📊</div>
+                    <h3>Analytics Dashboard</h3>
+                    <p><strong style="color: #003D82;">Port 8501</strong></p>
+                    <p>Interactive visualization tool showing 5 dashboards with real-time metrics, charts, and admin controls.</p>
+                    <p style="margin-top: 12px; font-size: 0.95em; color: #999;">Streamlit</p>
+                </div>
+                <div class="card">
+                    <div class="icon">💬</div>
+                    <h3>Slack Bot</h3>
+                    <p><strong style="color: #003D82;">Slash Commands</strong></p>
+                    <p>Allows employees to search training, view options, and enroll in courses without leaving Slack.</p>
+                    <p style="margin-top: 12px; font-size: 0.95em; color: #999;">Slack App Integration</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Data Sources -->
+        <div class="slide slide-6">
+            <h2>Connected Training Platforms</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Platform</th>
+                        <th>What It Provides</th>
+                        <th>How We Connect</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong style="color: #003D82;">PlusPlus (Learn++)</strong></td>
+                        <td>Internal training courses, assignments, enrollment tracking</td>
+                        <td>REST API</td>
+                    </tr>
+                    <tr>
+                        <td><strong style="color: #003D82;">Pluralsight</strong></td>
+                        <td>Technical skill courses, employee progress, course ratings</td>
+                        <td>GraphQL API</td>
+                    </tr>
+                    <tr>
+                        <td><strong style="color: #003D82;">Trailhead</strong></td>
+                        <td>Salesforce certifications, modules, skill badges</td>
+                        <td>MCP Integration</td>
+                    </tr>
+                    <tr>
+                        <td><strong style="color: #003D82;">O'Reilly</strong></td>
+                        <td>Books, videos, technical courses, learning paths</td>
+                        <td>MCP Integration</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Slide 7: Dashboard Sections -->
+        <div class="slide slide-7">
+            <h2>Five Analytics Dashboards</h2>
+
+            <div class="feature-list" style="margin-top: 40px;">
+                <div class="feature-item">
+                    <div class="feature-check">1️⃣</div>
+                    <div class="feature-text"><strong>Completion & Status:</strong> Track active, completed, and overdue courses by department with trend analysis.</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-check">2️⃣</div>
+                    <div class="feature-text"><strong>Budget & Cost:</strong> Compare spending to allocation, calculate cost-per-employee, measure training ROI.</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-check">3️⃣</div>
+                    <div class="feature-text"><strong>Engagement & Reach:</strong> Monitor unique employees engaged, active learners, total training hours logged.</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-check">4️⃣</div>
+                    <div class="feature-text"><strong>Effectiveness & Feedback:</strong> Display course ratings, pass rates, performance gains after training completion.</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-check">5️⃣</div>
+                    <div class="feature-text"><strong>Compliance & Expirations:</strong> Flag expiring certifications, track renewal deadlines, automated reminders.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Key Features -->
+        <div class="slide slide-8">
+            <h2 style="color: white;">Platform Capabilities</h2>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 50px;">
+                <div style="background: rgba(255,255,255,0.95); padding: 36px; border-radius: 14px; box-shadow: 0 8px 24px rgba(0,0,0,0.15);">
+                    <h3 style="color: #003D82; margin-bottom: 24px; font-size: 1.35em; display: flex; align-items: center; gap: 12px;"><span style="font-size: 1.6em;">👔</span> For Leadership</h3>
+                    <ul style="color: #555; margin-top: 0; font-size: 1.1em; line-height: 2;">
+                        <li>📊 Executive dashboards with key metrics</li>
+                        <li>💰 Budget tracking and ROI analysis</li>
+                        <li>📈 Department-level performance comparison</li>
+                        <li>✅ Compliance audit trail</li>
+                    </ul>
+                </div>
+                <div style="background: rgba(255,255,255,0.95); padding: 36px; border-radius: 14px; box-shadow: 0 8px 24px rgba(0,0,0,0.15);">
+                    <h3 style="color: #003D82; margin-bottom: 24px; font-size: 1.35em; display: flex; align-items: center; gap: 12px;"><span style="font-size: 1.6em;">👥</span> For Employees</h3>
+                    <ul style="color: #555; margin-top: 0; font-size: 1.1em; line-height: 2;">
+                        <li>🔍 One-click search across all platforms</li>
+                        <li>💡 Personalized course recommendations</li>
+                        <li>📍 Progress tracking</li>
+                        <li>⚡ Direct enrollment from Slack</li>
+                    </ul>
+                </div>
+                <div style="background: rgba(255,255,255,0.95); padding: 36px; border-radius: 14px; box-shadow: 0 8px 24px rgba(0,0,0,0.15);">
+                    <h3 style="color: #003D82; margin-bottom: 24px; font-size: 1.35em; display: flex; align-items: center; gap: 12px;"><span style="font-size: 1.6em;">👨‍💼</span> For Managers</h3>
+                    <ul style="color: #555; margin-top: 0; font-size: 1.1em; line-height: 2;">
+                        <li>📋 Team enrollment status</li>
+                        <li>🎯 Individual progress tracking</li>
+                        <li>🎓 Training recommendations</li>
+                        <li>🔧 Skill gap analysis</li>
+                    </ul>
+                </div>
+                <div style="background: rgba(255,255,255,0.95); padding: 36px; border-radius: 14px; box-shadow: 0 8px 24px rgba(0,0,0,0.15);">
+                    <h3 style="color: #003D82; margin-bottom: 24px; font-size: 1.35em; display: flex; align-items: center; gap: 12px;"><span style="font-size: 1.6em;">🎓</span> For L&D Teams</h3>
+                    <ul style="color: #555; margin-top: 0; font-size: 1.1em; line-height: 2;">
+                        <li>📊 Real-time adoption metrics</li>
+                        <li>⭐ Course effectiveness data</li>
+                        <li>⏰ Compliance deadline alerts</li>
+                        <li>🔄 Certification renewal tracking</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Business Impact -->
+        <div class="slide slide-9">
+            <h2>Expected Business Impact</h2>
+
+            <div class="grid-2" style="margin-top: 40px;">
+                <div class="stat-box">
+                    <div class="stat-number">40%</div>
+                    <div class="stat-label">Faster Discovery</div>
+                    <p class="stat-detail">Employees find courses in minutes vs. hours of manual searching across platforms</p>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">30%</div>
+                    <div class="stat-label">Better Visibility</div>
+                    <p class="stat-detail">Real-time spending visibility vs. quarterly manual budget reports</p>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Automated</div>
+                    <p class="stat-detail">Certification renewals tracked automatically with deadline alerts</p>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">5x</div>
+                    <div class="stat-label">Data-Driven</div>
+                    <p class="stat-detail">Evidence-based training decisions backed by real performance data</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Getting Started -->
+        <div class="slide slide-10">
+            <h2>Getting Started</h2>
+
+            <div style="margin-top: 40px;">
+                <div class="section">
+                    <h3>📍 Step 1: Access the Dashboards</h3>
+                    <div style="background: white; border-left: 5px solid #00A1DF; padding: 22px; border-radius: 10px; margin-top: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                        <p style="font-size: 1.1em; color: #555; margin-bottom: 8px;"><strong>Local:</strong> http://localhost:8501</p>
+                        <p style="font-size: 1.1em; color: #555;"><strong>Network:</strong> http://192.168.1.198:8501</p>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>🔍 Step 2: Explore the Data</h3>
+                    <div class="feature-list">
+                        <div class="feature-item">
+                            <div style="font-size: 1.6em; color: #00A1DF;">→</div>
+                            <div class="feature-text">Use sidebar filters to explore by department, platform, or date range</div>
+                        </div>
+                        <div class="feature-item">
+                            <div style="font-size: 1.6em; color: #00A1DF;">→</div>
+                            <div class="feature-text">Click on charts and tables to drill down into specific data</div>
+                        </div>
+                        <div class="feature-item">
+                            <div style="font-size: 1.6em; color: #00A1DF;">→</div>
+                            <div class="feature-text">Use the Admin panel to adjust cost estimates and tracking settings</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>💬 Step 3: Enable Slack Integration</h3>
+                    <p style="font-size: 1.1em; margin-top: 15px; color: #666;">Once the Slack app is approved, type <span class="highlight">/training-search</span> in any Slack channel to find training and enroll instantly.</p>
+                </div>
+
+                <div class="blocker-warning">
+                    <h3>⚠️ Current Blocker: Slack App Approval</h3>
+                    <p><strong>Status:</strong> All system components are complete and ready. The only remaining item is approval of the Slack application. Once approved, employees can immediately start using the Slack integration for training discovery and enrollment.</p>
+                    <p style="margin-top: 12px;"><strong>Next Action:</strong> Waiting for Slack app workspace approval from IT/Admin</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Next Steps -->
+        <div class="slide slide-11">
+            <h2 style="color: white;">Implementation Timeline</h2>
+
+            <div style="margin-top: 50px; font-size: 1.2em;">
+                <div style="background: rgba(255,255,255,0.12); padding: 28px; border-radius: 12px; margin-bottom: 25px; border-left: 5px solid rgba(255,255,255,0.5); backdrop-filter: blur(10px);">
+                    <strong style="font-size: 1.2em; color: white;">Week 1:</strong> <span style="color: rgba(255,255,255,0.9);">Slack app approval, Slack integration rollout, begin multi-platform search</span>
+                </div>
+                <div style="background: rgba(255,255,255,0.12); padding: 28px; border-radius: 12px; margin-bottom: 25px; border-left: 5px solid rgba(255,255,255,0.5); backdrop-filter: blur(10px);">
+                    <strong style="font-size: 1.2em; color: white;">Week 2:</strong> <span style="color: rgba(255,255,255,0.9);">Dashboard launch, team training, initial dashboard access</span>
+                </div>
+                <div style="background: rgba(255,255,255,0.12); padding: 28px; border-radius: 12px; border-left: 5px solid rgba(255,255,255,0.5); backdrop-filter: blur(10px);">
+                    <strong style="font-size: 1.2em; color: white;">Week 3+:</strong> <span style="color: rgba(255,255,255,0.9);">Gather feedback, optimize dashboards, scale to all departments</span>
+                </div>
+            </div>
+
+            <div class="footer-text">Questions? Contact Digital Enterprise Technology</div>
+        </div>
+    </div>
+
+    <div class="slide-counter">
+        <span id="current">1</span> / <span id="total">11</span>
+    </div>
+
+    <div class="controls">
+        <button id="prev" onclick="prevSlide()">← Previous</button>
+        <button id="next" onclick="nextSlide()">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+
+            document.getElementById('current').textContent = currentSlide + 1;
+            document.getElementById('prev').disabled = currentSlide === 0;
+            document.getElementById('next').disabled = currentSlide === totalSlides - 1;
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) showSlide(currentSlide + 1);
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) showSlide(currentSlide - 1);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        showSlide(0);
+    </script>
+</body>
+</html>
